@@ -1,3 +1,14 @@
+<?php 
+
+	include_once('autoload/autoload.php');
+	use App\Validator;
+
+	if(isset($_POST['register'])){
+		$validator = new Validator($_POST['name'], $_POST['email'], $_POST['password'], $_POST['confirm_password']);
+		$error = $validator->runValidator();
+	}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,10 +31,10 @@
 			  <div class="collapse navbar-collapse" id="navbarSupportedContent">
 			    <ul class="navbar-nav ml-auto">
 			      <li class="nav-item active">
-			        <a class="nav-link" href="index.html">Login <span class="sr-only">(current)</span></a>
+			        <a class="nav-link" href="index.php">Login <span class="sr-only">(current)</span></a>
 			      </li>
 			      <li class="nav-item">
-			        <a class="nav-link" href="register.html">Register</a>
+			        <a class="nav-link" href="register.php">Register</a>
 			      </li>
 			      <!-- <li class="nav-item dropdown">
 			        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -51,32 +62,34 @@
 		</div>
 		<div class="input-form">
 			<h4>Register</h4>
-			<form action="">
+			<form action="" method="POST">
 				<div class="form-group">
-			      <input type="email" class="form-control" id="validationServer01" value="" placeholder="Email" required>
+					<input type="email" class="form-control <?php echo !empty($error->email) ? 'is-invalid' : ''; ?>" id="validationServer01" value="" name="email" placeholder="Email" required>
+					<?php if(!empty($error->email)): ?>
+					<div id="validationServer03Feedback" class="invalid-feedback">
+						<?php echo $error->email; ?>
+					</div>
+			  		<?php endif; ?>
+			    </div>
+			    <div class="form-group">
+			      <input type="text" class="form-control" id="validationServer01" value="" name="name" placeholder="Name" required>
 			      <div class="valid-feedback">
 			        Looks good!
 			      </div>
 			    </div>
 			    <div class="form-group">
-			      <input type="text" class="form-control" id="validationServer01" value="" placeholder="Name" required>
+			      <input type="password" class="form-control" id="validationServer01" value="" name="password" placeholder="Password" required>
 			      <div class="valid-feedback">
 			        Looks good!
 			      </div>
 			    </div>
 			    <div class="form-group">
-			      <input type="password" class="form-control" id="validationServer01" value="" placeholder="Password" required>
-			      <div class="valid-feedback">
-			        Looks good!
-			      </div>
-			    </div>
-			    <div class="form-group">
-			      <input type="password" class="form-control" id="validationServer02" value="" placeholder="Confirm Password" required>
+			      <input type="password" class="form-control" id="validationServer02" value="" name="confirm_password" placeholder="Confirm Password" required >
 			      <div class="invalid-feedback">
 			        Looks good!
 			      </div>
 			    </div>
-			    <button class="btn btn-primary float-right" type="submit">Register</button>
+			    <button class="btn btn-primary float-right" type="submit" name="register">Register</button>
 			    <div class="clearfix"></div>
 			    <!-- <div class="other-form-links">
 			    	<a href="#">Register</a>
