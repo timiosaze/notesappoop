@@ -1,25 +1,10 @@
-<?php 
+<?php
 
-namespace App;
+namespace App\Traits;
 
-class Validator {
+trait ValidateRegister {
 	public $errors = array();
-	private $name;
-	private $email;
-	private $password;
-	private $confirm_password;
-
-	// public static function itWorks(){
-	// 	echo "it works hurray";
-	// }
-
-	public function __construct($name, $email, $password, $confirm_password){
-		$this->name = trim(htmlspecialchars($name));
-		$this->email = trim(htmlspecialchars($email));
-		$this->password = trim(htmlspecialchars($password));
-		$this->confirm_password = trim(htmlspecialchars($confirm_password));
-	}
-
+	
 	public function emptyName(){
 		if($this->name === ""){
 			$this->errors['name'] = 'name cannot be empty';
@@ -59,17 +44,7 @@ class Validator {
 	public function checkPasswordMatch(){
 		if($this->password !== $this->confirm_password){
 			$this->errors['password'] = "password does not match";
+			$this->errors['cpassword'] = "password does not match";
 		}
-	}
-	public function runValidator(){
-		$this->emptyName();
-		$this->emptyEmail();
-		$this->isNotAValidName();
-		$this->isNotAValidEmail();
-		$this->emptyPassword();
-		$this->emptyConPassword();
-		$this->passwordLength();
-		$this->checkPasswordMatch();
-		return (object) $this->errors;
 	}
 }

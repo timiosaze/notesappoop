@@ -1,7 +1,13 @@
 <?php 
 
 include_once('autoload/autoload.php');
-use App\Validator;
+use App\ValidatorLogin;
+
+if(isset($_POST['login'])){
+	$validator = new ValidatorLogin($_POST['email'], $_POST['password']);
+	$error = $validator->runValidator();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -57,20 +63,24 @@ use App\Validator;
 		</div>
 		<div class="input-form">
 			<h4>SignIn</h4>
-			<form action="">
+			<form action="" method="POST">
 				<div class="form-group">
-			      <input type="email" class="form-control" id="validationServer01" value="" placeholder="Email" required>
-			      <div class="valid-feedback">
-			        Looks good!
-			      </div>
+			      <input type="email" class="form-control <?php echo !empty($error->email) ? 'is-invalid' : ''; ?>" id="validationServer01" value="" name="email" placeholder="Email" required>
+			      <?php if(!empty($error->email)): ?>
+					<div id="validationServer03Feedback" class="invalid-feedback">
+						<b> <?php echo $error->email; ?> </b>
+					</div>
+			  	  <?php endif; ?>
 			    </div>
 			    <div class="form-group">
-			      <input type="password" class="form-control" id="validationServer02" value="" placeholder="Password" required>
-			      <div class="invalid-feedback">
-			        Looks good!
-			      </div>
+			      <input type="password" class="form-control <?php echo !empty($error->password) ? 'is-invalid' : ''; ?>" id="validationServer02" value="" name="password" placeholder="Password" required>
+			      <?php if(!empty($error->password)): ?>
+					<div id="validationServer03Feedback" class="invalid-feedback">
+						<b> <?php echo $error->password; ?> </b>
+					</div>
+			  	  <?php endif; ?>
 			    </div>
-			    <button class="btn btn-primary float-right" type="submit">Login</button>
+			    <button class="btn btn-primary float-right" type="submit" name="login">Login</button>
 			    <div class="clearfix"></div>
 			    <div class="other-form-links">
 			    	<a href="#">Register</a>
